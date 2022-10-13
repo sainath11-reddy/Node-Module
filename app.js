@@ -1,15 +1,26 @@
 const http = require("http");
 const express = require("express");
+const bodyParser = require('body-parser');
+
 // const server = http.createServer(app);
 // server.listen(3000);
 const app = express();
-app.use((req,res,next)=>{
-    console.log("In the middleware");
-    next();
+
+app.use(bodyParser.urlencoded({extended: false}));
+
+app.use('/add-product',(req,res,next)=>{
+    
+    res.send("<form action='/product' method='POST'><input type='text'name='value'><input type='text'name='size'><input type='submit'></form>");
+
 })
-app.use((req,res,next)=>{
-    console.log("In the second middleware");
-    res.send({key1:100});
+
+app.use('/product',(req,res,next)=>{
+    console.log(req.body);
+    res.redirect('/');
+})
+app.use('/',(req,res,next)=>{
+    
+    res.send("<h1>This is the Home Page</h1>");
     
 })
-app.listen(8080);
+app.listen(8080);   
